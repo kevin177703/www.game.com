@@ -1,5 +1,16 @@
 <?php
 /**
+ * 修改，ci框架已做修改，注意
+ * kevin177703@gmail.com
+ */
+ini_set('date.timezone', 'Asia/Hong_Kong');
+define('ROOT', substr(__FILE__,0,-9));
+define('ROOT_SYSTEM',ROOT."system/");
+define('ROOT_TMP',ROOT."tmp/");
+define('ROOT_PUBLIC',ROOT."public/");
+require_once ROOT_SYSTEM.'extra/init.php';
+
+/**
  * CodeIgniter
  *
  * An open source application development framework for PHP
