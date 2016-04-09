@@ -32,16 +32,13 @@
  * @property CI_Xmlrpc $xmlrpc
  * @property CI_Zip $zip
  * @property CI_Form $form_validation
- * @property Dsmarty $smarty
  * @property Dinit $init
- * @property Dmodel_model $model
  */
 class Base_Controller extends CI_Controller {
 	public $init = null;               //起始类
-	public $model = null;              //数据模型
 	public function __construct() {
 		parent::__construct ();
-		//$this->model = model("dmodel");
+		$this->init = library("dinit");
 		$this->init();
 	}
 	function init(){
