@@ -17,6 +17,7 @@ class Dinit{
 	
 	//*******************自定义***********************/
 	public $is_ajax = false;						//是否是ajax
+	public $url = "";								//url
 	
 	//*******************自定义类**********************/
 	public $model = null;							//数据库模型类
@@ -46,7 +47,20 @@ class Dinit{
 			$this->log->w404("host查询失败");
 			show_404();
 		}
-	
+		
+		//分析url
+		$url_one = $this->ci->uri->segment(1);
+		$url_two = $this->ci->uri->segment(2);
+		$url_one = strtolower($url_one);
+		$url_two = strtolower($url_two);
+		$url_one = empty($url_one)?"index":$url_one;
+		$this->url = $url_one;
+		if($url_one=="ajax"){
+			$this->url = $url_two;
+			$this->is_ajax = true;
+		}
+		if(strpos($this->url,"-")==false)$this->url="main-{$this->url}";
+		
 		//设置品牌编码
 		$brand_no = $host['id']<10?"Brand00{$host['id']}":($host['id']<100?"Brand0{$host['id']}":"Brand{$host['id']}");
 		$this->smarty->set_brand_no($brand_no);
@@ -58,8 +72,18 @@ class Dinit{
 		$this->brand_name = $host['name'];
 		$this->agent_id = $host['agent_id'];
 		
+		$this->log->view();	//访问日志
+		
 		if($host['app'] != APP){
-			echo 11;
+			if($this->is_ajax){
+				$this->log->w404("ajax地址异常");
+				show_404();
+			}
+			if($host['app']=="home"){
+				header("Location:/");
+			}else{
+				header("Location:/{$host['app']}/");
+			}
 		}
 	}
 	//引入smarty模版，带参数

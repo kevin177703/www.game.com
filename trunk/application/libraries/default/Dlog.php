@@ -29,10 +29,9 @@ class Dlog {
 	 * @param $username
 	 * @param $uid
 	 */
-	function view($username="",$uid=0){
-		if(empty($username))$username = "未登录";
+	function view(){
 		$path = "{$this->path}view/{$this->title}";
-		$content = "用户[{$username}][{$uid}];访问地址:".ROOT_URL.";访问参数:GET".json_encode($_GET).";POST=".json_encode($_POST);
+		$content = "访问地址:".ROOT_URL.";访问参数:GET".json_encode($_GET).";POST=".json_encode($_POST);
 		$this->_write($content, $path);
 	}
 	/**

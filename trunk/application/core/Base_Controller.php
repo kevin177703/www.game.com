@@ -42,21 +42,9 @@ class Base_Controller extends CI_Controller {
 		$this->init();
 	}
 	function init(){
-		//开始判断library类
-		$url1 = $this->uri->segment(1);
-		$url2 = $this->uri->segment(2);
-		$url1 = strtolower($url1);
-		$url2 = strtolower($url2);
-		//首页
-		$url1 = empty($url1)?"index":$url1;
-		$url = $url1;
-		if($url1=="ajax"){
-			$url = $url2;
-		}
-		if(strpos($url,"-")==false)$url="main-{$url}";
-		$url = ex($url,"-");
+		$url = ex($this->init->url,"-");
 		if(count($url)!=2 || empty($url[0]) || empty($url[1])){
-			$this->init->log->w404("链接为空{$url1}-{$url2}-{$url3}");
+			$this->init->log->w404("链接为空{$this->init->url}");
 			show_404();
 		}
 		//对应文件夹
@@ -78,7 +66,7 @@ class Base_Controller extends CI_Controller {
 		//判断类的方法
 		$class = new $class($this->init);
 		$method = strtolower($url[1]);
-		$method = $url1=="ajax"?"ajax_{$method}":$method;
+		$method = $this->init->is_ajax?"ajax_{$method}":$method;
 		if(!method_exists($class, $method)){
 			$this->init->log->w404("{$path}的类{$class}的方法{$method}不存在");
 			show_404();
