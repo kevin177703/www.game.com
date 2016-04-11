@@ -24,11 +24,21 @@ class Mbrand{
 		//此方法未例外，必须另外获取mode和memcache对象
 		if(empty($this->model))$this->model = model("bmodel");
 		if(empty($this->model->memcache))$this->model->memcache = library("dmemcache");
-		$sql = "SELECT b.id,b.`name`,bh.`host`,bh.app,bh.agent_id FROM  "
-			  ."{$this->model->table($this->model->table_brand)} b LEFT JOIN  "
-			  ."{$this->model->table($this->model->table_brand_host)} bh ON b.id=bh.brand_id "
-			  ."where b.del='N' and bh.del='N' and bh.host='{$host}'";
-		$data = $this->model->one($sql);
-		return $data;
+		$no = $this->model->memcache->getNo($this->model->memcache->mem_no_brand);
+		$key = $this->model->memcache->mem_brand."_get_brand_for_host_{$no}";
+		$info = $this->model->memcache->get($key);
+		if(empty($info)){
+			$info = null;
+			$sql = "SELECT b.id,b.`name`,bh.`host`,bh.app,bh.agent_id FROM  "
+				  ."{$this->model->table($this->model->table_brand)} b LEFT JOIN  "
+				  ."{$this->model->table($this->model->table_brand_host)} bh ON b.id=bh.brand_id "
+				  ."where b.del='N' and bh.del='N' and bh.host='{$host}'";
+			$data = $this->model->one($sql);
+			if(isset($data['id'])){
+				$info = $data;
+				$this->model->memcache->set($key, $info);
+			}
+		}
+		return $info;
 	}
 }

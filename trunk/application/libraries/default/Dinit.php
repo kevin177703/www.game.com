@@ -54,7 +54,12 @@ class Dinit{
 		$this->memcache->set_brand_no($brand_no);
 		$this->model->set_class($this->log,$this->memcache);
 		
+		$this->brand_id = $host['id'];
+		$this->brand_name = $host['name'];
+		$this->agent_id = $host['agent_id'];
+		
 		if($host['app'] != APP){
+			echo 11;
 		}
 	}
 	//引入smarty模版，带参数

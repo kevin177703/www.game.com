@@ -14,6 +14,12 @@ class Dmemcache {
 	//是否启用memcache缓存
 	public $status = true;
 	
+	//**********************缓存key***************************/
+	public $mem_brand = "brand";							//品牌相关
+	
+	//**********************缓存key对应no*********************/
+	public $mem_no_brand = "brand_no";						//品牌相关
+	
 	function __construct() {
 		$this->ci = ci();
 		$this->ci->config->load('memcache');
@@ -32,7 +38,7 @@ class Dmemcache {
 		if($this->status==false)return null;
 		try {
 			if (empty($this->cache) && isset($this->config['host'])){
-				$cache = new Memcache();
+				$cache = @new Memcache();
 				if ($cache->connect($this->config['host'], $this->config['port'])){
 					$this->cache = $cache;
 				}
@@ -46,19 +52,19 @@ class Dmemcache {
 		if(empty ( $this->cache ))return false;
 		$key = $this->getKey($key);
 		if($expire == 0)$expire = $this->cache_expire;
-		return $this->cache->set($key, $value, MEMCACHE_COMPRESSED, $expire );
+		return @$this->cache->set($key, $value, MEMCACHE_COMPRESSED, $expire );
 	}
 	//获取缓存
 	function get($key) {
 		if (empty($this->cache))return null;
 		$key = $this->getKey($key);
-		return $this->cache->get($key);
+		return @$this->cache->get($key);
 	}
 	// 删除缓存
 	function delete($key, $timeout = 0) {
 		if (empty($this->cache))return null;
 		$key = $this->getKey($key);
-		$this->cache->delete($key, $timeout);
+		@$this->cache->delete($key, $timeout);
 	}
 	//更新关键编号
 	function setNo($key){

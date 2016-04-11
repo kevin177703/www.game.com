@@ -85,7 +85,7 @@ class Dlog {
 	 */
 	private function _write($content,$path){
 		if(is_array($content))$content = json_encode($content);
-		$data = "[".date("Y-m-d H:i:s")."][".ROOT_HOST."][".ip()."]{$content}";
+		$data = "[".date("Y-m-d H:i:s")."][".ROOT_HOST."][".ip()."]{$content}\r\n";
 		write($path, $data);
 	}
 }
