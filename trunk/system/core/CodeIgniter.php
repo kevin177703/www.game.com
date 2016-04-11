@@ -406,7 +406,6 @@ if ( ! is_php('5.4'))
 	else
 	{
 		require_once(APPPATH.'controllers/'.APP.'/'.$RTR->directory.$class.'.php');
-
 		if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
 		{
 			$e404 = TRUE;

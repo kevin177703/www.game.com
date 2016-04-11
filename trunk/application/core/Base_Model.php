@@ -33,146 +33,170 @@
  * @property CI_Zip $zip
  * @property CI_Form $form_validation
  * @property Dmemcache $memcache
+ * @property Dlog $log
  */
 class Base_Model extends CI_Model {
-	public $openNo = null;          //数据库操作编号
-	public $memcache = null;        //memcache
-
-	public $table_money_note = "money_note";                //资金记录表
-	public $table_money_type = "money_type";                //资金类型表
-	public $table_money_bank = "money_bank";                //银行卡
-	public $table_money_status = "money_status";        	//资金状态
-	public $table_money_third = "money_third";        		//第三方支付
-	public $table_money_log = "money_log";                  //资金日志
+	/********************自定义变量*****************************/
+	public $db_no = null;          							//数据库操作编号
 	
-	public $table_pay_setting = "pay_online";               //在线支付取款设置表
-	public $table_pay_list = "pay_list";                    //支付取款记录表
-	public $table_pay_bank = "pay_bank";                    //银行转账设置表
+	/********************自定义类******************************/
+	public $memcache = null;                				//缓存类
+	public $log = null;                     				//文件日志类
 	
-	public $table_session = "session";                      //session记录
-	
-	public $table_agent = "agent";                          //总代关系表
-	public $table_agent_host = "agent_host";                //网站域名 -主域名
-	public $table_agent_version = "agent_version";          //网站版本号
-	public $table_agent_host_more = "agent_host_more";      //网站域名列表-分域名
-	public $table_agent_extend = "agent_extend";            //代理设置的游戏推广
-	
-	public $table_admin = "admin";                          //用户表
-	public $table_admin_group = "admin_group";              //用户组
-	public $table_admin_menu = "admin_menu";                //菜单
-	public $table_admin_log = "admin_log";                  //管理日志
-	public $table_admin_view = "admin_view";                //用户浏览记录
-	 
-	public $table_users = "users";                          //用户表
-	public $table_users_same_ip = "users_same_ip";          //用户ip记录表
-	public $table_users_same_pc = "users_same_pc";          //用户电脑记录表
-	public $table_users_group = "users_group";              //用户级别表
-	public $table_users_log = "users_log";                  //用户日志表
-	public $table_users_bank = "users_bank";                //用户开户银行
-	public $table_users_banktype = "users_banktype";        //会员银行类别
-	                                                   
-	public $table_setting = "setting";                      //设置
-	
-	public $table_game_type = "game_type";                  //游戏类型
-	
-	public $table_only_no = "only_no";                      //编号唯一表
-	
-	public $table_message_notice = "message_notice";        //信息公告表
-	public $table_message_type = "message_type";            //信息类型
-	
+	/***********************品牌相关表*************************/
+	public $table_brand = "brand";							//品牌列表
+	public $table_brand_host = "brand_host";				//品牌域名列表
 	
 	function __construct() {
 		parent::__construct ();
-		$this->load->database ();
-		$this->memcache = library('dmemcache');
-		$this->openNo = get_rand(18);
+		$this->load->database();
+		$this->db_no = get_rand(18);
 	}
-	// 获取带前缀的表名
+	/**
+	 * 获取带前缀的表名
+	 * @param $table
+	 */
 	function table($table) {
 		return $this->db->protect_identifiers($table,TRUE);
 	}
-	//获取数据总条数
+	/**
+	 * 获取数据总条数
+	 * @param $table
+	 * @param array $where
+	 */
 	function total($table,$where = array()){
+		$begin_time = microtime(true);
 		if(is_array($where)){
 			$where['del']='N';
 		}
 		$query = $this->db->get_where($table,$where);
 		$total = $query->num_rows();
-		$this->last_sql();
+		$this->last_sql($begin_time,"base_total");
 		return $total;
 	}
-	//获取数据总条数-sql
+	/**
+	 * 获取数据总条数-sql
+	 * @param $sql
+	 */
 	function total_sql($sql){
+		$begin_time = microtime(true);
 		$query = $this->db->query($sql);
 		$total = $query->num_rows();
-		$this->last_sql();
+		$this->last_sql($begin_time,"base_total_sql");
 		return $total;
 	}
-	//sql查询
+	/**
+	 * sql查询
+	 * @param $sql
+	 * @param $limit
+	 * @param $offset
+	 * @param $order
+	 */
 	function query($sql, $limit, $offset = 0,$order="") {
+		$begin_time = microtime(true);
 		$data = array('total'=>0,'rows'=>array());
 		$data['total'] = $this->total_sql($sql);
-		if ($data['total']<1){
-			return $data;
+		$this->last_sql($begin_time,"base_query_total");
+		if($data['total']>0){
+			if(!empty($order))$order = " order by {$order} desc";
+			$sql .=" {$order} limit {$offset},{$limit}";
+			$query=$this->db->query($sql);
+			$data['rows']=$query->result_array();
+			$this->last_sql($begin_time,"base_query_rows");
 		}
-		if(!empty($order))$order = " order by {$order} desc";
-		$sql .=" {$order} limit {$offset},{$limit}";
-		$query=$this->db->query($sql);
-		$data['rows']=$query->result_array();
-		$this->last_sql();
 		return $data;
 	}
-	// 获取一条数据的sql查询
+	/**
+	 * 获取一条数据的sql查询
+	 * @param $sql
+	 */
 	function one($sql) {
+		$begin_time = microtime(true);
 		$query = $this->db->query($sql);
 		$info = array();
-		if ($query->num_rows()> 0) {
+		if ($query->num_rows()>0){
 			$info = $query->row_array();
 		}
-		$this->last_sql();
+		$this->last_sql($begin_time,"base_one");
 		return $info;
 	}
-	//保存批量数据
+	/**
+	 * 保存多条数据
+	 * @param $table
+	 * @param $data
+	 */
 	function insert($table,$data){
+		$begin_time = microtime(true);
 		$bol = $this->db->insert_batch($table,$data);
-		$this->last_sql();
+		$this->last_sql($begin_time,"base_insert");
 		return $bol;
 	}
-	//保存数据
+	/**
+	 * 保存单条数据
+	 * @param $table
+	 * @param $data
+	 */
 	function save($table, $data) {
+		$begin_time = microtime(true);
 		$id = 0;
 		if ($this->db->insert($table,$data)) {
 			$id = $this->db->insert_id();
 		}
-		$this->last_sql();
+		$this->last_sql($begin_time,"base_save");
 		return $id;
 	}
-	//修改
+	/**
+	 * 修改数据表
+	 * @param $table
+	 * @param $data
+	 * @param $where
+	 */
 	function edit($table, $data, $where) {
+		$begin_time = microtime(true);
 		$bol = $this->db->update($table, $data, $where);
-		$this->last_sql();
+		$this->last_sql($begin_time,"base_edit");
 		return $bol;
 	}
-	//删除
+	/**
+	 * 非真实删除,只是改变状态，不影响其他，所有表字段必须有del字段
+	 * @param $table
+	 * @param $where
+	 */
 	function del($table, $where) {
+		$begin_time = microtime(true);
 		$bol = $this->db->update($table,array('del'=>'Y'),$where);
-		$this->last_sql();
+		$this->last_sql($begin_time,"base_del");
 		return $bol;
 	}
-	//真实删除
+	/**
+	 * 真实删除,测试删除数据，而非改变状态
+	 * @param $table
+	 * @param $where
+	 */
 	function tdel($table, $where) {
+		$begin_time = microtime(true);
 		$bol = $this->db->delete($table, $where);
-		$this->last_sql();
+		$this->last_sql($begin_time,"base_tdel");
 		return $bol;
 	}
-	//清空
+	/**
+	 * 清空表
+	 * @param $table
+	 */
 	function del_all($table) {
+		$begin_time = microtime(true);
 		$bol = $this->db->empty_table($table);
-		$this->last_sql();
+		$this->last_sql($begin_time,"base_del_all");
 		return $bol;
 	}
-	//查询单条数据
+	/**
+	 * 查询单条数据
+	 * @param $table
+	 * @param $where
+	 * @param $select
+	 */
 	function get($table, $where,$select="*") {
+		$begin_time = microtime(true);
 		if(is_array($where))$where['del']='N';
 		$this->db->select($select);
 		$query = $this->db->get_where($table,$where);
@@ -180,37 +204,67 @@ class Base_Model extends CI_Model {
 		if($query->num_rows()> 0) {
 			$info = $query->row_array();
 		}
-		$this->last_sql();
+		$this->last_sql($begin_time,"base_get");
 		return $info;
 	}
-	//列表
+	/**
+	 * 数据列表
+	 * @param $table
+	 * @param $where
+	 * @param $limit
+	 * @param $offset
+	 * @param array $order
+	 */
 	function get_list($table, $where, $limit, $offset = 0, $order = array()) {
+		$begin_time = microtime(true);
 		if(is_array($where)){
 			$where['del']='N';
 		}
 		$data = array('total'=>0,'rows'=>array());
 		$data['total'] = $this->total($table,$where);
-		if($data['total']<1){
-			return $data;
+		$this->last_sql($begin_time,"base_get_list_total");
+		if($data['total']>0){
+			if(isset($order[0]) && !empty($order[0])){
+				$order[1]= isset($order[1])?$order[1]:'desc';
+				$this->db->order_by($order[0],$order[1]);
+			}
+			$query = $this->db->get_where($table,$where,$limit,$offset );
+			$data['rows']=$query->result_array();
+			$this->last_sql($begin_time,"base_get_list_rows");
 		}
-		if(isset($order[0]) && !empty($order[0])){
-			$order[1]= isset($order[1])?$order[1]:'desc';
-			$this->db->order_by($order[0],$order[1]);
-		}
-		$query = $this->db->get_where($table,$where,$limit,$offset );
-		$data['rows']=$query->result_array();
-		$this->last_sql();
 		return $data;
 	}
-	//自定义操作
+	/**
+	 * 打开链接
+	 */
 	function db() {
+		if(empty($this->db)){
+			$this->load->database();
+		}
 		return $this->db;
 	}
-	//获取sql语句
-	function last_sql(){
+	/**
+	 * 获取最后的数据库查询语句,若time大于0，则会写入日志
+	 * @param $time
+	 * @param $message
+	 */
+	function last_sql($time=0,$message=""){
 		$sql = $this->db->last_query();
 		$sql = str_replace("\n"," ",$sql);
-		write_sql("[".$this->openNo."]".$sql);
+		if($time>0){
+			$time = microtime(true)-$time;
+			if(empty($this->log))$this->log = library("Dlog");
+			$this->log->sql("[{$this->db_no}]{$sql}",$time,$message);
+		}
 		return $sql;
+	}
+	/**
+	 * 设置类方法
+	 * @param $log
+	 * @param $memcache
+	 */
+	function set_class($log,$memcache){
+		$this->log = $log;
+		$this->memcache = $memcache;
 	}
 }

@@ -56,7 +56,7 @@ class Base_Controller extends CI_Controller {
 		if(strpos($url,"-")==false)$url="main-{$url}";
 		$url = ex($url,"-");
 		if(count($url)!=2 || empty($url[0]) || empty($url[1])){
-			write_404("链接为空{$url1}-{$url2}-{$url3}");
+			$this->init->log->w404("链接为空{$url1}-{$url2}-{$url3}");
 			show_404();
 		}
 		//对应文件夹
@@ -67,20 +67,20 @@ class Base_Controller extends CI_Controller {
 		
 		$path = ROOT_APP_LIBRARIES."{$model}/{$class}.php";
 		if(!file_exists($path)){
-			write_404("{$path}不存在");
+			$this->init->log->w404("{$path}不存在");
 			show_404();
 		}
 		require_once $path;
 		if(!class_exists($class)){
-			write_404("{$path}的类{$class}不存在");
+			$this->init->log->w404("{$path}的类{$class}不存在");
 			show_404();
 		}
 		//判断类的方法
-		$class = new $class($this->init,$this->model);
+		$class = new $class($this->init);
 		$method = strtolower($url[1]);
 		$method = $url1=="ajax"?"ajax_{$method}":$method;
 		if(!method_exists($class, $method)){
-			write_404("{$path}的类{$class}的方法{$method}不存在");
+			$this->init->log->w404("{$path}的类{$class}的方法{$method}不存在");
 			show_404();
 		}
 		$class->$method();

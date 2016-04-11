@@ -80,7 +80,7 @@ $db['default'] = array(
 	'password' => '',
 	'database' => 'game',
 	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
+	'dbprefix' => 'kv_',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,

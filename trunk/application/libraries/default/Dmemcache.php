@@ -24,8 +24,8 @@ class Dmemcache {
 		$this->content();
 	}
 	//添加网站编码前缀
-	function set_web_no($web_no){
-		$this->cache_prefix = $this->cache_prefix.$web_no."_";
+	function set_brand_no($brand_no){
+		$this->cache_prefix = $this->cache_prefix.$brand_no."_";
 	}
 	//链接缓存
 	function content(){
@@ -60,12 +60,6 @@ class Dmemcache {
 		$key = $this->getKey($key);
 		$this->cache->delete($key, $timeout);
 	}
-	//获取key
-	function getKey($key){
-		if (empty($this->cache))return null;
-		$key = $this->cache_prefix.'_'.md5($key);
-		return $key;
-	}
 	//更新关键编号
 	function setNo($key){
 		if (empty($this->cache))return null;
@@ -86,5 +80,10 @@ class Dmemcache {
 	function clean() {
 		if (empty($this->cache))return null;
 		return $this->cache->flush();
+	}
+	//获取key
+	function getKey($key){
+		$key = $this->cache_prefix.'_'.md5($key);
+		return $key;
 	}
 }
