@@ -1,13 +1,13 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * 前台后台公共相关
+ * session相关
  * @author kevin email:kevin177703@gmail.com
  * @version 0.0.1
  */
 /**
  * @property Bmodel_model $model
  */
-class Mpubmod{
+class Msession{
 	private $ci;   
 	private $model;
 	function __construct(){
@@ -24,7 +24,7 @@ class Mpubmod{
 	function get_session($token,$is_admin="N"){
 		$no = $this->model->memcache->getNo($this->model->memcache->mem_no_session);
 		$token_no = $this->model->memcache->getNo($this->model->memcache->mem_no_session."_{$token}");
-		$key = $this->model->memcache->mem_session."_get_session_{$token}_$is_admin_{$no}_{$token_no}";
+		$key = $this->model->memcache->mem_session."_get_session_{$token}_{$is_admin}_{$no}_{$token_no}";
 		$info = $this->model->memcache->get($key);
 		if(empty($info)){
 			$info = null;

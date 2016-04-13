@@ -9,7 +9,8 @@
  * @property Mbrand $brand
  * @property Mmember $member
  * @property Madmin $admin
- * @property Mpubmod $pubmod
+ * @property Msession $session
+ * @property Msetting $setting
  */
 class Dmodel {
 	private $ci;   
@@ -21,7 +22,8 @@ class Dmodel {
 	public $brand = null;							//品牌相关类
 	public $member = null;							//会员相关类
 	public $admin = null;							//后台管理员相关类
-	public $pubmod = null;							//前后台公共
+	public $session = null;							//session
+	public $setting = null;							//设置相关类
 	
 	function __construct(){
 		$this->ci = ci();
@@ -29,13 +31,15 @@ class Dmodel {
 		$this->brand = library("mbrand","model");
 		$this->member = library("mmember","model");
 		$this->admin = library("madmin","model");
-		$this->pubmod = library("mpubmod","model");
+		$this->session = library("msession","model");
+		$this->setting = library("msetting","model");
 	}
 	function set_class($log,$memcache){
 		$this->bmodel->set_class($log, $memcache);
 		$this->brand->set_bmodel($this->bmodel);
 		$this->member->set_bmodel($this->bmodel);
 		$this->admin->set_bmodel($this->bmodel);
-		$this->pubmod->set_bmodel($this->bmodel);
+		$this->session->set_bmodel($this->bmodel);
+		$this->setting->set_bmodel($this->bmodel);
 	}
 }

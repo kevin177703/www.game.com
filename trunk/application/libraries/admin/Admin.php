@@ -8,7 +8,7 @@
  */
 class Admin{
 	private $init;                           		//默认起始类
-	private $token=null;							//令牌
+	public $token=null;								//令牌
 	
 	//**********************后台参数*******************/
 	public $uid = 0;								//管理员id
@@ -28,6 +28,15 @@ class Admin{
 			$this->token = get_rand(32);
 			set_cookieI($token_name, $this->token);
 		}
-		$this->init->model->pubmod->del_session_for_time();
+		//删除默认过期时间的session
+		$this->init->model->session->del_session_for_time();
+		$session = $this->init->model->session->get_session($this->token,'Y');
+		if(isset($session['uid'])){
+			$this->uid = $session['uid'];
+			$this->username = $session['username'];
+			$this->group_id = $session['group_id'];
+			$this->group_name = $session['group_name'];
+			$this->opener_name = "[{$this->group_name}]{$this->username}";
+		}
 	}
 }
