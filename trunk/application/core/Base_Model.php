@@ -36,16 +36,26 @@
  * @property Dlog $log
  */
 class Base_Model extends CI_Model {
-	/********************自定义变量*****************************/
-	public $db_no = null;          							//数据库操作编号
+	//*************************自定义变量***************************/
+	public $db_no = null;          							 	//数据库操作编号
 	
-	/********************自定义类******************************/
-	public $memcache = null;                				//缓存类
-	public $log = null;                     				//文件日志类
+	//*************************自定义类****************************/
+	public $memcache = null;                					//缓存类
+	public $log = null;                     					//文件日志类
 	
-	/***********************品牌相关表*************************/
-	public $table_brand = "brand";							//品牌列表
-	public $table_brand_host = "brand_host";				//品牌域名列表
+	//*************************品牌相关表**************************/
+	public $table_brand = "brand";								//品牌列表
+	public $table_brand_host = "brand_host";					//品牌域名列表
+	
+	//*************************session相关表**********************/
+	public $table_session = "session";							//session表
+	
+	//*************************管理员相关表*************************/
+	public $table_admin = "admin";								//管理员表
+	public $table_admin_group = "admin_group";					//管理员组表
+	
+	//*************************会员相关表**************************/
+	public $table_member = "member";							//会员列表
 	
 	function __construct() {
 		parent::__construct ();

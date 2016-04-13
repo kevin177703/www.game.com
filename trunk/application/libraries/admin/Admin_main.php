@@ -13,6 +13,7 @@ class Admin_main{
 	function __construct($init){
 		$this->init = $init;
 		$this->admin = library("admin","admin");
+		$this->admin->load($init);
 	}
 	function index(){
 	}

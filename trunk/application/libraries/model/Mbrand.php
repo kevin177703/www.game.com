@@ -21,11 +21,11 @@ class Mbrand{
 	 * @param string $host 网站域名
 	 */
 	function get_brand_for_host($host){
-		//此方法未例外，必须另外获取mode和memcache对象
+		//此方法未例外，必须另外获取mode和memcache对象,其他所有方法都引用Dinit对象中的
 		if(empty($this->model))$this->model = model("bmodel");
 		if(empty($this->model->memcache))$this->model->memcache = library("dmemcache");
 		$no = $this->model->memcache->getNo($this->model->memcache->mem_no_brand);
-		$key = $this->model->memcache->mem_brand."_get_brand_for_host_{$no}";
+		$key = $this->model->memcache->mem_brand."_get_brand_for_host_{$host}_{$no}";
 		$info = $this->model->memcache->get($key);
 		if(empty($info)){
 			$info = null;

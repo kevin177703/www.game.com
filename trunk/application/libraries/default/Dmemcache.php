@@ -16,9 +16,11 @@ class Dmemcache {
 	
 	//**********************缓存key***************************/
 	public $mem_brand = "brand";							//品牌相关
+	public $mem_session = "session";						//session相关
 	
 	//**********************缓存key对应no*********************/
 	public $mem_no_brand = "brand_no";						//品牌相关
+	public $mem_no_session = "session_no";					//session相关
 	
 	function __construct() {
 		$this->ci = ci();
