@@ -44,8 +44,8 @@ class Base_Model extends CI_Model {
 	public $log = null;                     					//文件日志类
 	
 	//*************************品牌相关表**************************/
-	public $table_brand = "brand";								//品牌列表
-	public $table_brand_host = "brand_host";					//品牌域名列表
+	public $table_brand = "brand";								//品牌表
+	public $table_brand_host = "brand_host";					//品牌域名表
 	
 	//*************************session相关表**********************/
 	public $table_session = "session";							//session表
@@ -55,7 +55,14 @@ class Base_Model extends CI_Model {
 	public $table_admin_group = "admin_group";					//管理员组表
 	
 	//*************************会员相关表**************************/
-	public $table_member = "member";							//会员列表
+	public $table_member = "member";							//会员表
+	
+	//*************************设置相关表**************************/
+	public $table_setting = "setting";							//设置表
+	
+	//*************************日志相关表**************************/
+	public $table_log_login = "log_login";						//登陆日志表
+	public $table_log_view = "log_view";						//浏览日志表
 	
 	function __construct() {
 		parent::__construct ();
