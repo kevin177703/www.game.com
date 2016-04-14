@@ -264,16 +264,6 @@ if(!function_exists('ex_string')){
 		return $str;
 	}
 }
-if(!function_exists('check_ip')){
-	/**
-	 * 检查ip
-	 * @param $ip     要检测的ip
-	 * @param $data   ip库
-	 */
-	function check_ip($ip,$data){
-		return preg_match("/^(".str_replace(array(",", ' '), array('|', ''), preg_quote($data, '/')).")/", $ip);
-	}
-}
 if(!function_exists('get_rand')){
 	/**
 	 * 创建随机字符
@@ -502,5 +492,26 @@ if(!function_exists('del_all_cookie')){
 		foreach ($_COOKIE as $k=>$v){
 			setcookie($k,null,$time,'/');
 		}
+	}
+}
+if(!function_exists('check_ip')){
+	/**
+	 * 检查ip
+	 * @param $ips ip段
+	 * @param $ip 要检查的ip 
+	 * @param $empty 若ip段为空时返回bool
+	 */
+	function check_ip($ips,$ip=null,$empty=true){
+		if(empty($ip))$ip=ip();
+		$ips = trim($ips);
+		if(empty($ips))return $empty;
+		$ips = explode("\r\n",$ips);
+		$data= null;
+		foreach($ips as $v){
+			$v = trim($v);
+			if(!empty($v))$data[]=$v;
+		}
+		$ipregexp = implode('|', str_replace( array('*','.'), array('\d+','\.') ,$data));
+		return preg_match("/^(".$ipregexp.")$/", $ip);
 	}
 }
