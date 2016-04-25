@@ -28,8 +28,7 @@ class Admin{
 			$this->token = get_rand(32);
 			set_cookieI($token_name, $this->token);
 		}
-		//删除默认过期时间的session
-		$this->init->model->session->del_session_for_time();
+		
 		$session = $this->init->model->session->get_session($this->token,'Y');
 		if(isset($session['uid'])){
 			$this->uid = $session['uid'];
@@ -37,6 +36,14 @@ class Admin{
 			$this->group_id = $session['group_id'];
 			$this->group_name = $session['group_name'];
 			$this->opener_name = "[{$this->group_name}]{$this->username}";
+		}
+		$url = ex($this->init->url,"-");
+		if($this->uid<1 && !in_array($url[1],array("login","logout"))){
+			if($this->init->is_ajax){
+				json_error("您的登录已超时");
+			}else{
+				skip("/admin/login");
+			}
 		}
 	}
 }

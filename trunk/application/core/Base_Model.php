@@ -56,6 +56,7 @@ class Base_Model extends CI_Model {
 	
 	//*************************会员相关表**************************/
 	public $table_member = "member";							//会员表
+	public $table_member_monitor = "member_monitor";			//会员监控表
 	
 	//*************************设置相关表**************************/
 	public $table_setting = "setting";							//设置表

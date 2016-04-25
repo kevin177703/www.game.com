@@ -72,8 +72,6 @@ class Dinit{
 		$this->brand_name = $host['name'];
 		$this->agent_id = $host['agent_id'];
 		
-		$this->log->view();	//访问日志
-		
 		if($host['app'] != APP){
 			if($this->is_ajax){
 				$this->log->w404("ajax地址异常");
@@ -86,16 +84,27 @@ class Dinit{
 			}
 		}
 	}
-	//引入smarty模版，带参数
+	/**
+	 * 引入smarty模版，带参数
+	 * @param $html
+	 * @param $data
+	 */
 	function display($html, $data = array()) {
 		$this->smarty->dassign($data);
 		$this->smarty->ddisplay($html.'.html');
 	}
-	//引入smarty模版参数
+	/**
+	 * 引入smarty模版参数
+	 * @param $data
+	 */
 	function assign($data){
 		$this->smarty->dassign($data);
 	}
-	//直接返回smarty模版数据,带参数
+	/**
+	 * 直接返回smarty模版数据,带参数
+	 * @param $html
+	 * @param $data
+	 */
 	function fetch($html, $data = array()) {
 		$this->smarty->dassign($data);
 		return $this->smarty->dfetch($html.'.html');

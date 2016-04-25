@@ -15,11 +15,14 @@ class Admin_main{
 		$this->admin = library("admin","admin");
 		$this->admin->load($init);
 	}
+	//后台首页
 	function index(){
 	}
+	//后台登录页
 	function login(){
 		
 	}
+	//后台登陆页ajax
 	function ajax_login(){
 		
 	}
