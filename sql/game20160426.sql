@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 127.0.0.1
+Source Server         : 虚拟机-192.168.88.93
 Source Server Version : 50617
-Source Host           : localhost:3306
+Source Host           : 192.168.88.93:3306
 Source Database       : game
 
 Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-04-26 19:50:44
+Date: 2016-04-26 23:58:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -139,7 +139,7 @@ CREATE TABLE `kv_log_login` (
   `addtime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   `del` char(1) NOT NULL DEFAULT 'N' COMMENT 'Y后台管理员,N前台会员',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='会员和管理员登陆日志';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='会员和管理员登陆日志';
 
 -- ----------------------------
 -- Records of kv_log_login
@@ -147,6 +147,15 @@ CREATE TABLE `kv_log_login` (
 INSERT INTO `kv_log_login` VALUES ('4', 'abc', '账号不存在', 'd468fon3a05bw65c92', '127.0.0.1', '1', 'Y', 'N', '1461670678', 'N');
 INSERT INTO `kv_log_login` VALUES ('5', 'admin', '登录成功', '19i39jb6qe9k5i4282', '127.0.0.1', '1', 'Y', 'Y', '1461670891', 'N');
 INSERT INTO `kv_log_login` VALUES ('6', 'admin', '登录成功', 'jdf4864oi205dfdgx1', '127.0.0.1', '1', 'Y', 'Y', '1461670934', 'N');
+INSERT INTO `kv_log_login` VALUES ('7', 'admin', '登录成功', '22jmw272329240667b', '192.168.88.90', '1', 'Y', 'Y', '1461683560', 'N');
+INSERT INTO `kv_log_login` VALUES ('8', 'admin', '登录成功', 'fjxlz001v079dr5e97', '192.168.88.90', '1', 'Y', 'Y', '1461683642', 'N');
+INSERT INTO `kv_log_login` VALUES ('9', 'admin', '登录成功', '8ca8qy51xu475mzc2x', '192.168.88.90', '1', 'Y', 'Y', '1461683722', 'N');
+INSERT INTO `kv_log_login` VALUES ('10', 'admin', 'session错误', '163a7fd0df0dr05m5v', '192.168.88.90', '1', 'Y', 'N', '1461685609', 'N');
+INSERT INTO `kv_log_login` VALUES ('11', 'admin', 'session错误', '44c5v5np297776514b', '192.168.88.90', '1', 'Y', 'N', '1461685713', 'N');
+INSERT INTO `kv_log_login` VALUES ('12', 'admin', '登录失败', '89n578f768xg588af5', '192.168.88.90', '1', 'Y', 'N', '1461686162', 'N');
+INSERT INTO `kv_log_login` VALUES ('13', 'admin', '登录失败', 'fwj2f470e977osit8z', '192.168.88.90', '1', 'Y', 'N', '1461686164', 'N');
+INSERT INTO `kv_log_login` VALUES ('14', 'admin', '登录失败', '1af5u5a7v9ci015o55', '192.168.88.90', '1', 'Y', 'N', '1461686172', 'N');
+INSERT INTO `kv_log_login` VALUES ('15', 'admin', '登录成功', 'dd751m43ez300k51t3', '192.168.88.90', '1', 'Y', 'Y', '1461686251', 'N');
 
 -- ----------------------------
 -- Table structure for kv_log_view
@@ -251,6 +260,7 @@ CREATE TABLE `kv_session` (
 -- ----------------------------
 -- Records of kv_session
 -- ----------------------------
+INSERT INTO `kv_session` VALUES ('hasek80d1d9d578qtebv12850p944g35', '{\"user\":{\"id\":\"1\",\"username\":\"admin\",\"password\":\"c61719fc185a47d0ab80a350898a78ff\",\"brand_id\":\"1\",\"group_id\":\"1\",\"maxmoney\":\"0.00\",\"operatemoney\":\"0.00\",\"operatettime\":\"0\",\"status\":\"Y\",\"is_luck\":\"N\",\"unlucktime\":\"0\",\"addtime\":\"0\",\"del\":\"N\"},\"group\":{\"id\":\"1\",\"name\":\"\\u8d85\\u7ea7\\u7ba1\\u7406\\u5458\\u7ec4\",\"brand_id\":\"1\",\"menus_sel\":\"\",\"menus_add\":null,\"menus_edit\":null,\"menus_del\":null,\"menus_undo\":\"N\",\"menus_exam\":\"N\",\"menus_conf\":\"N\",\"del\":\"N\"}}', '1', 'Y', '1461686251', '1461686251', 'N');
 
 -- ----------------------------
 -- Table structure for kv_setting
