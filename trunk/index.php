@@ -9,7 +9,6 @@ define('ROOT_SYSTEM',ROOT."system/");
 define('ROOT_TMP',ROOT."tmp/");
 define('ROOT_PUBLIC',ROOT."public/");
 require_once ROOT_SYSTEM.'extra/init.php';
-
 /**
  * CodeIgniter
  *

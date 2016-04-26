@@ -50,16 +50,16 @@ class Msession{
 	 * @param $is_admin 
 	 */
 	function add_session($session,$token,$is_admin='N'){
-		if(!isset($session['id']))return false;
+		if(!isset($session['user']['id']))return false;
 		$data = array(
 				"token"=>$token,
 				"session"=>json_encode($session),
-				"uid"=>$session['id'],
+				"uid"=>$session['user']['id'],
 				"is_admin"=>$is_admin,
 				"lasttime"=>time(),
 				"addtime"=>time()
 		);
-		return $this->model->save($this->model->table_session, $data);
+		return $this->model->insert($this->model->table_session, $data);
 	}
 	/**
 	 * 更新session

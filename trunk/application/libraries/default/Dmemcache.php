@@ -12,7 +12,7 @@ class Dmemcache {
 	private $cache_expire = null;
 	
 	//是否启用memcache缓存
-	public $status = true;
+	public $status = false;
 	
 	//**********************缓存key***************************/
 	public $mem_brand = "brand";							//品牌相关

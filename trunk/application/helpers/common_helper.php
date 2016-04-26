@@ -209,7 +209,7 @@ if(!function_exists('json_ok')){
 	 * @param $data 参数
 	 * @param $msg 提示
 	 */
-	function json_ok($data=array(),$msg="success"){
+	function json_ok($msg="success",$data=array()){
 		$data=array("result"=>true,"msg"=>$msg,"data"=>$data);
 		echo json_encode($data);
 		exit();

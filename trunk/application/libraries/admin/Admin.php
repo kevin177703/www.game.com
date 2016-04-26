@@ -11,32 +11,43 @@ class Admin{
 	public $token=null;								//令牌
 	
 	//**********************后台参数*******************/
+	public $user = array();							//用户
+	public $group = array();						//用户组
 	public $uid = 0;								//管理员id
 	public $username = "";							//管理员账号
 	public $group_id ="";							//管理员组id
 	public $group_name = "";						//管理员组名称
 	public $opener_name = "";						//操作员名称[组别][账号]
+	public $is_admin_brand = false;					//是否是超级管理员品牌
+	public $is_admin_group = false;					//是否是超级管理员
 	
 	function __construct(){
 	}
 	//装载后台基础数据
 	function load($init){
 		$this->init = $init;
+		//设置cookie
 		$token_name = md5("atoken".ROOT_HOST);
 		$this->token = get_cookieI($token_name);
 		if(empty($this->token)){
 			$this->token = get_rand(32);
 			set_cookieI($token_name, $this->token);
 		}
-		
+		//获取用户session
 		$session = $this->init->model->session->get_session($this->token,'Y');
-		if(isset($session['id'])){
-			$this->uid = $session['id'];
-			$this->username = $session['username'];
-			$this->group_id = $session['group_id'];
-			$this->group_name = $session['group_name'];
+		if(isset($session['user'])){
+			$this->user = $session['user'];
+			$this->group = $session['group'];
+			$this->uid = $this->user['id'];
+			$this->username = $this->user['username'];
+			$this->group_id = $this->group['id'];
+			$this->group_name = $this->group['name'];
 			$this->opener_name = "[{$this->group_name}]{$this->username}";
+			if($this->init->brand_id == ADMIN_BRAND_ID)$this->is_admin_brand = true;
+			if($this->group_id == ADMIN_GROUD_ID) $this->is_admin_group = true;
+			if($this->is_admin_group)$this->opener_name = color("[超]")."[{$this->group_name}]{$this->username}";
 		}
+		//是否需要做登录判断
 		$url = ex($this->init->url,"-");
 		if($this->uid<1 && !in_array($url[1],array("login","logout"))){
 			if($this->init->is_ajax){

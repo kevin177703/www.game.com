@@ -140,18 +140,29 @@ class Base_Model extends CI_Model {
 		return $info;
 	}
 	/**
-	 * 保存多条数据
+	 * 保存单条数据
 	 * @param $table
 	 * @param $data
 	 */
 	function insert($table,$data){
 		$begin_time = microtime(true);
-		$bol = $this->db->insert_batch($table,$data);
+		$bol = $this->db->insert($table,$data);
 		$this->last_sql($begin_time,"base_insert");
 		return $bol;
 	}
 	/**
-	 * 保存单条数据
+	 * 保存多条数据
+	 * @param $table
+	 * @param $data
+	 */
+	function insert_batch($table,$data){
+		$begin_time = microtime(true);
+		$bol = $this->db->insert_batch($table,$data);
+		$this->last_sql($begin_time,"insert_batch");
+		return $bol;
+	}
+	/**
+	 * 保存单条数据返回id
 	 * @param $table
 	 * @param $data
 	 */
