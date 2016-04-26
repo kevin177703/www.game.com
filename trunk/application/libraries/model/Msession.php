@@ -85,7 +85,7 @@ class Msession{
 	 */
 	function del_session_for_time($time=0){
 		$key = $this->model->table_session."_del_session_for_time";
-		//每一小时删除一次单文时间内的缓存
+		//每一小时删除一次单位时间内的缓存
 		if($this->model->memcache->get($key) < time()-60*60){
 			if($time<1)$time = time()-48*3600;
 			$this->_del_session(array("lasttime <"=>$time));

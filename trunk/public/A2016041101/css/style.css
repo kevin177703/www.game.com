@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+.textbox{
+	height:30px;
+	margin:0;
+	padding:0 4px;
+	box-sizing:content-box;
+}

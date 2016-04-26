@@ -30,8 +30,8 @@ class Admin{
 		}
 		
 		$session = $this->init->model->session->get_session($this->token,'Y');
-		if(isset($session['uid'])){
-			$this->uid = $session['uid'];
+		if(isset($session['id'])){
+			$this->uid = $session['id'];
 			$this->username = $session['username'];
 			$this->group_id = $session['group_id'];
 			$this->group_name = $session['group_name'];
@@ -45,13 +45,13 @@ class Admin{
 				skip("/admin/login");
 			}
 		}
-		
+		//全局模板变量
 		$assign = array(
 				"third"=>"/public/third/",
 				"css"=>"/public/{$this->init->template_name}/css/",
 				"js"=>"/public/{$this->init->template_name}/js/",
 				"image"=>"/public/{$this->init->template_name}/image/",
-				"web_title"=>$this->brand_name,
+				"web_title"=>$this->init->brand_name,
 				"web_year"=>date("Y-m-d"),
 		);
 		$this->init->assign($assign);

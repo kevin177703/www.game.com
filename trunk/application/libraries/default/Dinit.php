@@ -76,7 +76,7 @@ class Dinit{
 		//设置模板地址
 		$template = $this->model->brand->get_brand_template_for_id($host['template_id']);
 		if(!isset($template['id'])){
-			$this->log->w404("没有绑定模板");
+			$this->log->w404("没有设置模板");
 			show_404();
 		}
 		$this->template_name = $template['name'];

@@ -20,7 +20,7 @@ class Admin_main{
 	}
 	//后台登录页
 	function login(){
-		
+		$this->init->display("main/login");
 	}
 	//后台登陆页ajax
 	function ajax_login(){
