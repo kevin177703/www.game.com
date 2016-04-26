@@ -30,6 +30,7 @@ class Dinit{
 	public $brand_name = "";						//品牌名字
 	public $brand_id = 0;							//品牌id
 	public $agent_id = 0;							//代理id
+	public $template_name = "";						//获取模板名称
 	//构造函数
 	function __construct(){
 		$this->ci = ci();
@@ -71,6 +72,19 @@ class Dinit{
 		$this->brand_id = $host['id'];
 		$this->brand_name = $host['name'];
 		$this->agent_id = $host['agent_id'];
+		
+		//设置模板地址
+		$template = $this->model->brand->get_brand_template_for_id($host['template_id']);
+		if(!isset($template['id'])){
+			$this->log->w404("没有绑定模板");
+			show_404();
+		}
+		$this->template_name = $template['name'];
+		if(!file_exists(ROOT_PUBLIC."{$this->template_name}/html")){
+			$this->log->w404("模板路径不存在");
+			show_404();
+		}
+		$this->smarty->set_brand_template($this->template_name);
 		
 		if($host['app'] != APP){
 			if($this->is_ajax){

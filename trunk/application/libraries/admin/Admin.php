@@ -45,5 +45,15 @@ class Admin{
 				skip("/admin/login");
 			}
 		}
+		
+		$assign = array(
+				"third"=>"/public/third/",
+				"css"=>"/public/{$this->init->template_name}/css/",
+				"js"=>"/public/{$this->init->template_name}/js/",
+				"image"=>"/public/{$this->init->template_name}/image/",
+				"web_title"=>$this->brand_name,
+				"web_year"=>date("Y-m-d"),
+		);
+		$this->init->assign($assign);
 	}
 }

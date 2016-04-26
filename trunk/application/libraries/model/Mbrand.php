@@ -29,11 +29,29 @@ class Mbrand{
 		$info = $this->model->memcache->get($key);
 		if(empty($info)){
 			$info = null;
-			$sql = "SELECT b.id,b.`name`,bh.`host`,bh.app,bh.agent_id FROM  "
+			$sql = "SELECT b.id,b.`name`,bh.`host`,bh.template_id,bh.app,bh.agent_id FROM  "
 				  ."{$this->model->table($this->model->table_brand)} b LEFT JOIN  "
 				  ."{$this->model->table($this->model->table_brand_host)} bh ON b.id=bh.brand_id "
 				  ."where b.del='N' and bh.del='N' and bh.host='{$host}'";
 			$data = $this->model->one($sql);
+			if(isset($data['id'])){
+				$info = $data;
+				$this->model->memcache->set($key, $info);
+			}
+		}
+		return $info;
+	}
+	/**
+	 * 根据模板id获取模板名称
+	 * @param $id
+	 */
+	function get_brand_template_for_id($id){
+		$no = $this->model->memcache->getNo($this->model->memcache->mem_no_brand);
+		$key = $this->model->memcache->mem_brand."_get_brand_template_for_id_{$id}_{$no}";
+		$info = $this->model->memcache->get($key);
+		if(empty($info)){
+			$info = null;
+			$data = $this->model->get($this->model->table_brand_template, array("id"=>$id));
 			if(isset($data['id'])){
 				$info = $data;
 				$this->model->memcache->set($key, $info);

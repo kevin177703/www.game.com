@@ -12,13 +12,17 @@ class Dsmarty extends Smarty {
 		$this->caching = false;
 		$this->template_dir = null;
 	}
-	//设置对应的网站编码
+	//设置对应的品牌编码
 	function set_brand_no($brand_no){
 		$this->template_dir = ROOT_PUBLIC.$brand_no."/html";
 		$this->compile_dir = ROOT_TMP.$brand_no.'/smarty/templates_c';
 		$this->cache_dir = ROOT_TMP.$brand_no.'/smarty/cache';
 		if(!file_exists($this->compile_dir))make_dir($this->compile_dir);
 		if(!file_exists($this->cache_dir))make_dir($this->cache_dir);
+	}
+	//设置对应模板地址
+	function set_brand_template($template_name){
+		$this->template_dir = ROOT_PUBLIC.$template_name."/html";
 	}
 	function dassign($key,$value=null,$nocache=false){
 		if(empty($this->template_dir))return false;

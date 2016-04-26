@@ -46,6 +46,7 @@ class Base_Model extends CI_Model {
 	//*************************品牌相关表**************************/
 	public $table_brand = "brand";								//品牌表
 	public $table_brand_host = "brand_host";					//品牌域名表
+	public $table_brand_template = "brand_template";			//网站模板
 	
 	//*************************session相关表**********************/
 	public $table_session = "session";							//session表
