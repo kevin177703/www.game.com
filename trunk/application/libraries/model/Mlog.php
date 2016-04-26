@@ -21,16 +21,18 @@ class Mlog{
 	 * @param $username 账号
 	 * @param $operate_no 操作编号
 	 * @param $brand_id	品牌编号
+	 * @param $explain 登录解释
 	 * @param $status 登录状态
 	 * @param $is_admin	
 	 */
-	function login($username,$operate_no,$brand_id,$status="Y",$is_admin='N'){
+	function login($username,$operate_no,$brand_id,$explain,$is_admin='N',$status="N"){
 		$ip = ip();
 		$where = array("username"=>$username,"operate_no"=>$operate_no,"brand_id"=>$brand_id);
 		$data = array(
 				"username"=>$username,
 				"operate_no"=>$operate_no,
 				"brand_id"=>$brand_id,
+				"explain"=>$explain,
 				"status"=>$status,
 				"is_admin"=>$is_admin,
 				"ip"=>$ip
@@ -39,7 +41,17 @@ class Mlog{
 		if(isset($info['id'])){
 			$this->model->edit($this->model->table_log_login, $data, $where);
 		}else{
+			$data['addtime']=time();
 			$this->model->save($this->model->table_log_login, $data);
 		}
+	}
+	/**
+	 * 获取24小时内登录日志数目
+	 * @param $where
+	 */
+	function login_num($where){
+		//24小时内
+		$where['addtime >'] = time()-24*3600;
+		return $this->model->total($this->model->table_log_login,$where);
 	}
 }

@@ -30,8 +30,24 @@ class Admin_main{
 		$password = post("password");
 		if(empty($username))json_error("账号不能为空");
 		if(empty($password))json_error("密码不能为空");
+		$username = strtolower($username);
+		$password = strtolower($password);
 		$operate_no = get_rand(18);
+		$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"登录失败",'Y');
+		/**
+		$user_total = $this->init->model->log->login_num(array("username"=>$username));
+		if($user_total>=5)json_error("账号登录次数超过5次，请24小时后再登录");
+		*/
 		$user = $this->init->model->admin->get_user(array("username"=>$username));
-		
+		if(!isset($user['id'])){
+			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"账号不存在",'Y');
+			json_error("登录账号不存在,请重试");
+		}
+		if($user['password']!=get_admin_password($username, $password)){
+			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"密码错误",'Y');
+			json_error("登录密码错误，请重试");
+		}
+		$this->init->model->log->login($username,$operate_no,$this->init->brand_id,'登录成功','Y','Y');
+		json_ok("登录成功");
 	}
 }

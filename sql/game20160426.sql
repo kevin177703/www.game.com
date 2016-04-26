@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-04-26 18:53:55
+Date: 2016-04-26 19:50:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,18 +28,18 @@ CREATE TABLE `kv_admin` (
   `maxmoney` float(10,2) NOT NULL DEFAULT '0.00' COMMENT '管理员组，每天最大金额操作',
   `operatemoney` float(10,2) NOT NULL DEFAULT '0.00' COMMENT '操作金额',
   `operatettime` int(11) NOT NULL DEFAULT '0' COMMENT '最后操作时间',
-  `logintime` int(11) NOT NULL DEFAULT '0' COMMENT '最后登录时间',
-  `errorcount` smallint(2) DEFAULT '0' COMMENT '登录错误次数',
-  `errortime` int(11) DEFAULT '0' COMMENT '登录错误日期',
   `status` char(1) NOT NULL DEFAULT 'Y' COMMENT '状态,Y启用，N禁用',
   `is_luck` char(1) NOT NULL DEFAULT 'N' COMMENT '锁定状态,Y锁定，N未锁定',
+  `unlucktime` int(11) NOT NULL COMMENT '解锁时间',
+  `addtime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   `del` char(1) NOT NULL DEFAULT 'N' COMMENT '是否已删除,Y是，N否',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理员';
 
 -- ----------------------------
 -- Records of kv_admin
 -- ----------------------------
+INSERT INTO `kv_admin` VALUES ('1', 'admin', 'c61719fc185a47d0ab80a350898a78ff', '1', '1', '0.00', '0.00', '0', 'Y', 'N', '0', '0', 'N');
 
 -- ----------------------------
 -- Table structure for kv_admin_group
@@ -58,11 +58,12 @@ CREATE TABLE `kv_admin_group` (
   `menus_conf` char(1) DEFAULT 'N' COMMENT '资金确认,Y有，N无',
   `del` char(1) NOT NULL DEFAULT 'N' COMMENT '是否已删除,Y是，N否',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理权限组';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理权限组';
 
 -- ----------------------------
 -- Records of kv_admin_group
 -- ----------------------------
+INSERT INTO `kv_admin_group` VALUES ('1', '超级管理员组', '1', '', null, null, null, 'N', 'N', 'N', 'N');
 
 -- ----------------------------
 -- Table structure for kv_brand
@@ -79,7 +80,7 @@ CREATE TABLE `kv_brand` (
 -- ----------------------------
 -- Records of kv_brand
 -- ----------------------------
-INSERT INTO `kv_brand` VALUES ('1', 'Game', '1460373364', 'N');
+INSERT INTO `kv_brand` VALUES ('1', '游戏总管理', '1460373364', 'N');
 
 -- ----------------------------
 -- Table structure for kv_brand_host
@@ -129,6 +130,7 @@ DROP TABLE IF EXISTS `kv_log_login`;
 CREATE TABLE `kv_log_login` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL COMMENT '登录帐号',
+  `explain` varchar(50) NOT NULL DEFAULT '' COMMENT '登录日志说明',
   `operate_no` varchar(20) NOT NULL COMMENT '操作编码',
   `ip` varchar(50) NOT NULL COMMENT '登陆ip',
   `brand_id` int(10) NOT NULL COMMENT '品牌id',
@@ -137,11 +139,14 @@ CREATE TABLE `kv_log_login` (
   `addtime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   `del` char(1) NOT NULL DEFAULT 'N' COMMENT 'Y后台管理员,N前台会员',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员和管理员登陆日志';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='会员和管理员登陆日志';
 
 -- ----------------------------
 -- Records of kv_log_login
 -- ----------------------------
+INSERT INTO `kv_log_login` VALUES ('4', 'abc', '账号不存在', 'd468fon3a05bw65c92', '127.0.0.1', '1', 'Y', 'N', '1461670678', 'N');
+INSERT INTO `kv_log_login` VALUES ('5', 'admin', '登录成功', '19i39jb6qe9k5i4282', '127.0.0.1', '1', 'Y', 'Y', '1461670891', 'N');
+INSERT INTO `kv_log_login` VALUES ('6', 'admin', '登录成功', 'jdf4864oi205dfdgx1', '127.0.0.1', '1', 'Y', 'Y', '1461670934', 'N');
 
 -- ----------------------------
 -- Table structure for kv_log_view
