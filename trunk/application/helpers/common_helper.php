@@ -485,11 +485,13 @@ if(!function_exists('del_cookieI')){
 if(!function_exists('del_all_cookie')){
 	/**
 	 * 删除所有的cookie
+	 * @param $exception 不需要删除的cookie
 	 */
-	function del_all_cookie(){
+	function del_all_cookie($exception=array()){
 		if(!is_array($_COOKIE) || count($_COOKIE)<1)return false;
 		$time = time()-100;
 		foreach ($_COOKIE as $k=>$v){
+			if(in_array($k, $exception))continue;
 			setcookie($k,null,$time,'/');
 		}
 	}
@@ -513,5 +515,25 @@ if(!function_exists('check_ip')){
 		}
 		$ipregexp = implode('|', str_replace( array('*','.'), array('\d+','\.') ,$data));
 		return preg_match("/^(".$ipregexp.")$/", $ip);
+	}
+}
+if(!function_exists('get_admin_password')){
+	/**
+	 * 设置后台登录密码加密方式
+	 * @param $username
+	 * @param $password
+	 */
+	function get_admin_password($username,$password){
+		return md5("[{$username}|{$password}]");
+	}
+}
+if(!function_exists('get_web_password')){
+	/**
+	 * 设置网站登录密码加密方式
+	 * @param $username
+	 * @param $password
+	 */
+	function get_web_password($username,$password){
+		return md5("[{$username}|kevin|{$password}]");
 	}
 }

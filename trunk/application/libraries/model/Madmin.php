@@ -16,4 +16,11 @@ class Madmin{
 	function set_bmodel($model){
 		$this->model = $model;
 	}
+	/**
+	 * 根据条件获取用户信息
+	 * @param $where 查询条件
+	 */
+	function get_user($where){
+		return $this->model->get($this->model->table_admin, $where);
+	}
 }

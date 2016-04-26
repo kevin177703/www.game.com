@@ -39,7 +39,7 @@ $(function(){
         }
 		$.ajax({
 			type: "POST",   
-          	url: "/admin/ajax/login.html",   
+          	url: "/admin/ajax/login.html",
           	data:{
 				username:username,
 				password:password
@@ -53,7 +53,7 @@ $(function(){
           	},   
           	success: function(data){
 				if(data.result == true){	
-					msg_box_show('登录成功!',2,'/','succeed');
+					msg_box_show(data.msg,2,'/','succeed');
 				}else {
 					msg_box_show(data.msg,2,'','error','');
 				}               
