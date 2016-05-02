@@ -30,6 +30,7 @@ class Msession{
 			$info = null;
 			$data = $this->model->get($this->model->table_session,array("token"=>$token,"is_admin"=>$is_admin));
 			if(isset($data['session'])){
+				$info = $data;
 				$this->model->memcache->set($key, $info);
 			}
 		}

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Main extends Base_Controller {
-	public function index($html){}
-	public function member($html){}
+	public function index($html=null){}
+	public function member($html=null){}
 }

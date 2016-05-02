@@ -53,6 +53,7 @@ class Admin_main{
 			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"用户组错误",'Y');
 			json_error("登录失败,请联系管理员001");
 		}
+		unset($user['password']);
 		$session = array("user"=>$user,"group"=>$group);
 		if($this->init->model->session->add_session($session, $this->admin->token,"Y")==false){
 			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"session错误",'Y');
