@@ -45,12 +45,10 @@ class Mlog{
 		}
 	}
 	/**
-	 * 获取24小时内登录日志数目
+	 * 获取登录日志数目
 	 * @param $where
 	 */
 	function login_num($where){
-		//24小时内
-		$where['addtime >'] = time()-24*3600;
 		return $this->model->total($this->model->table_log_login,$where);
 	}
 	/**

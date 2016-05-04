@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-05-04 13:36:35
+Date: 2016-05-04 19:39:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,7 +30,8 @@ CREATE TABLE `kv_admin` (
   `operatettime` int(11) NOT NULL DEFAULT '0' COMMENT '最后操作时间',
   `status` char(1) NOT NULL DEFAULT 'Y' COMMENT '状态,Y启用，N禁用',
   `is_luck` char(1) NOT NULL DEFAULT 'N' COMMENT '锁定状态,Y锁定，N未锁定',
-  `unlucktime` int(11) NOT NULL COMMENT '解锁时间',
+  `lucktime` int(11) DEFAULT NULL COMMENT '账号被锁定时间',
+  `unlucktime` int(11) DEFAULT NULL COMMENT '解锁时间',
   `addtime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   `del` char(1) NOT NULL DEFAULT 'N' COMMENT '是否已删除,Y是，N否',
   PRIMARY KEY (`id`)
@@ -39,7 +40,7 @@ CREATE TABLE `kv_admin` (
 -- ----------------------------
 -- Records of kv_admin
 -- ----------------------------
-INSERT INTO `kv_admin` VALUES ('1', 'admin', 'b602ae29c6725b4f1aee7334f153937c', '1', '1', '0.00', '0.00', '0', 'Y', 'N', '0', '0', 'N');
+INSERT INTO `kv_admin` VALUES ('1', 'admin', 'b602ae29c6725b4f1aee7334f153937c', '1', '1', '0.00', '0.00', '0', 'Y', 'Y', '1462360508', '1462360508', '0', 'N');
 
 -- ----------------------------
 -- Table structure for kv_admin_group
@@ -211,7 +212,7 @@ CREATE TABLE `kv_log_login` (
   `addtime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
   `del` char(1) NOT NULL DEFAULT 'N' COMMENT 'Y后台管理员,N前台会员',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='会员和管理员登陆日志';
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COMMENT='会员和管理员登陆日志';
 
 -- ----------------------------
 -- Records of kv_log_login
@@ -237,6 +238,40 @@ INSERT INTO `kv_log_login` VALUES ('21', 'admin', '登录成功', '1gah25a4of15b
 INSERT INTO `kv_log_login` VALUES ('22', 'admin', '登录成功', 'ahb126v9i0bk50t579', '127.0.0.1', '1', 'Y', 'Y', '1462259550', 'N');
 INSERT INTO `kv_log_login` VALUES ('23', 'admin', '登录成功', '8e0x5n07t6745fi8rs', '127.0.0.1', '1', 'Y', 'Y', '1462272541', 'N');
 INSERT INTO `kv_log_login` VALUES ('24', 'admin', '登录成功', '44c127b886lsq55536', '127.0.0.1', '1', 'Y', 'Y', '1462335907', 'N');
+INSERT INTO `kv_log_login` VALUES ('25', 'admin', '密码错误', 'habm5635u5y8zu2d8c', '127.0.0.1', '1', 'Y', 'N', '1462355042', 'N');
+INSERT INTO `kv_log_login` VALUES ('26', 'admin', '密码错误', '10303dlfak004w53fl', '127.0.0.1', '1', 'Y', 'N', '1462356605', 'N');
+INSERT INTO `kv_log_login` VALUES ('27', 'admin', '密码错误', 'b4n5497c32c29an3dq', '127.0.0.1', '1', 'Y', 'N', '1462356608', 'N');
+INSERT INTO `kv_log_login` VALUES ('28', 'admin', '密码错误', '13b928e971165321gk', '127.0.0.1', '1', 'Y', 'N', '1462356612', 'N');
+INSERT INTO `kv_log_login` VALUES ('29', 'admin', '密码错误', '994tvd0ep081555n43', '127.0.0.1', '1', 'Y', 'N', '1462356615', 'N');
+INSERT INTO `kv_log_login` VALUES ('30', 'admin', '密码错误', '6vb7acfe2u6h87t4ka', '127.0.0.1', '1', 'Y', 'N', '1462356617', 'N');
+INSERT INTO `kv_log_login` VALUES ('31', 'admin', '密码错误', 'r1862885pexnos4r45', '127.0.0.1', '1', 'Y', 'N', '1462356619', 'N');
+INSERT INTO `kv_log_login` VALUES ('32', 'admin', '密码错误', '7d0nhaebkfb9bu56cd', '127.0.0.1', '1', 'Y', 'N', '1462356621', 'N');
+INSERT INTO `kv_log_login` VALUES ('33', 'admin', '密码错误', 'v46x432c9o154fbl2t', '127.0.0.1', '1', 'Y', 'N', '1462356873', 'N');
+INSERT INTO `kv_log_login` VALUES ('34', 'admin', '密码错误', '73e38ccsfy7rc9571v', '127.0.0.1', '1', 'Y', 'N', '1462359881', 'N');
+INSERT INTO `kv_log_login` VALUES ('35', 'admin', '密码错误', 't001zzdt7nq09gm945', '127.0.0.1', '1', 'Y', 'N', '1462359983', 'N');
+INSERT INTO `kv_log_login` VALUES ('36', 'admin', '登录失败', 'x2265kd72y77059279', '127.0.0.1', '1', 'Y', 'N', '1462360026', 'N');
+INSERT INTO `kv_log_login` VALUES ('37', 'admin', '登录失败', '1794508zc3yev7n87c', '127.0.0.1', '1', 'Y', 'N', '1462360029', 'N');
+INSERT INTO `kv_log_login` VALUES ('38', 'admin', '登录失败', '8dbook81j7h4b4w4m9', '127.0.0.1', '1', 'Y', 'N', '1462360035', 'N');
+INSERT INTO `kv_log_login` VALUES ('39', 'admin', '登录失败', '2766g0ix0a32bdfo4d', '127.0.0.1', '1', 'Y', 'N', '1462360096', 'N');
+INSERT INTO `kv_log_login` VALUES ('40', 'admin', '登录失败', '939244ovsks0y0298a', '127.0.0.1', '1', 'Y', 'N', '1462360099', 'N');
+INSERT INTO `kv_log_login` VALUES ('41', 'admin', '登录失败', '02nqua427621z3d989', '127.0.0.1', '1', 'Y', 'N', '1462360102', 'N');
+INSERT INTO `kv_log_login` VALUES ('42', 'admin', '登录失败', 'v714b2ue6f58ot8543', '127.0.0.1', '1', 'Y', 'N', '1462360132', 'N');
+INSERT INTO `kv_log_login` VALUES ('43', 'admin', '密码错误', '9cueck9rx821b41l9m', '127.0.0.1', '1', 'Y', 'N', '1462360149', 'N');
+INSERT INTO `kv_log_login` VALUES ('44', 'admin', '密码错误', '47e348u05c40cw4p1z', '127.0.0.1', '1', 'Y', 'N', '1462360156', 'N');
+INSERT INTO `kv_log_login` VALUES ('45', 'admin', '密码错误', 'b3ky70d7c6163c6qh4', '127.0.0.1', '1', 'Y', 'N', '1462360158', 'N');
+INSERT INTO `kv_log_login` VALUES ('46', 'admin', '密码错误', '95bbn740afiz549cje', '127.0.0.1', '1', 'Y', 'N', '1462360202', 'N');
+INSERT INTO `kv_log_login` VALUES ('47', 'admin', '密码错误', 'j71f8v8ay6d3i7706u', '127.0.0.1', '1', 'Y', 'N', '1462360213', 'N');
+INSERT INTO `kv_log_login` VALUES ('48', 'admin', '登录失败', '8f5f8bdq0z1e378p0b', '127.0.0.1', '1', 'Y', 'N', '1462360300', 'N');
+INSERT INTO `kv_log_login` VALUES ('49', 'admin', '密码错误', 'd9748eh5b5g57c5942', '127.0.0.1', '1', 'Y', 'N', '1462360372', 'N');
+INSERT INTO `kv_log_login` VALUES ('50', 'admin', '密码错误', '2po358vmk6019ta01g', '127.0.0.1', '1', 'Y', 'N', '1462360390', 'N');
+INSERT INTO `kv_log_login` VALUES ('51', 'admin', '密码错误', '6a2au974v5ci329o1c', '127.0.0.1', '1', 'Y', 'N', '1462360443', 'N');
+INSERT INTO `kv_log_login` VALUES ('52', 'admin', '密码错误', 'fd711m7b1z582kfeta', '127.0.0.1', '1', 'Y', 'N', '1462360477', 'N');
+INSERT INTO `kv_log_login` VALUES ('53', 'admin', '密码错误', '974o69lw0rs13c6730', '127.0.0.1', '1', 'Y', 'N', '1462360490', 'N');
+INSERT INTO `kv_log_login` VALUES ('54', 'admin', '密码错误', 'a9f588629s6i5c163v', '127.0.0.1', '1', 'Y', 'N', '1462360493', 'N');
+INSERT INTO `kv_log_login` VALUES ('55', 'admin', '密码错误', '9811a61c52x6f5n258', '127.0.0.1', '1', 'Y', 'N', '1462360503', 'N');
+INSERT INTO `kv_log_login` VALUES ('56', 'admin', '密码错误', 'e2j170n26por23aajd', '127.0.0.1', '1', 'Y', 'N', '1462360506', 'N');
+INSERT INTO `kv_log_login` VALUES ('57', 'admin', '登录失败', 'f0285p3jeh9d7hc957', '127.0.0.1', '1', 'Y', 'N', '1462360508', 'N');
+INSERT INTO `kv_log_login` VALUES ('58', 'admin', '登录失败', '3304a7pj973d767ga6', '127.0.0.1', '1', 'Y', 'N', '1462360511', 'N');
 
 -- ----------------------------
 -- Table structure for kv_log_notes
@@ -364,7 +399,7 @@ CREATE TABLE `kv_session` (
 -- ----------------------------
 INSERT INTO `kv_session` VALUES ('43s266104x72idf1qk437f7aj835l9k3', '{\"user\":{\"id\":\"1\",\"username\":\"admin\",\"brand_id\":\"1\",\"group_id\":\"1\",\"maxmoney\":\"0.00\",\"operatemoney\":\"0.00\",\"operatettime\":\"0\",\"status\":\"Y\",\"is_luck\":\"N\",\"unlucktime\":\"0\",\"addtime\":\"0\",\"del\":\"N\"},\"group\":{\"id\":\"1\",\"name\":\"\\u8d85\\u7ea7\\u7ba1\\u7406\\u5458\\u7ec4\",\"brand_id\":\"1\",\"menus_sel\":\"\",\"menus_add\":null,\"menus_edit\":null,\"menus_del\":null,\"menus_undo\":\"N\",\"menus_exam\":\"N\",\"menus_conf\":\"N\",\"del\":\"N\"}}', '1', 'Y', '1462272346', '1462259550', 'N');
 INSERT INTO `kv_session` VALUES ('9h4ks85f4r79b60f7va18qn8lwm8j22s', '{\"user\":{\"id\":\"1\",\"username\":\"admin\",\"brand_id\":\"1\",\"group_id\":\"1\",\"maxmoney\":\"0.00\",\"operatemoney\":\"0.00\",\"operatettime\":\"0\",\"status\":\"Y\",\"is_luck\":\"N\",\"unlucktime\":\"0\",\"addtime\":\"0\",\"del\":\"N\"},\"group\":{\"id\":\"1\",\"name\":\"\\u8d85\\u7ea7\\u7ba1\\u7406\\u5458\\u7ec4\",\"brand_id\":\"1\",\"menus_sel\":\"\",\"menus_add\":null,\"menus_edit\":null,\"menus_del\":null,\"menus_undo\":\"N\",\"menus_exam\":\"N\",\"menus_conf\":\"N\",\"del\":\"N\"}}', '1', 'Y', '1462258784', '1462182425', 'N');
-INSERT INTO `kv_session` VALUES ('b64wd8du6a71n0grtf85xg81kb9hlf4l', '{\"user\":{\"id\":\"1\",\"username\":\"admin\",\"brand_id\":\"1\",\"group_id\":\"1\",\"maxmoney\":\"0.00\",\"operatemoney\":\"0.00\",\"operatettime\":\"0\",\"status\":\"Y\",\"is_luck\":\"N\",\"unlucktime\":\"0\",\"addtime\":\"0\",\"del\":\"N\"},\"group\":{\"id\":\"1\",\"name\":\"\\u8d85\\u7ea7\\u7ba1\\u7406\\u5458\\u7ec4\",\"brand_id\":\"1\",\"menus_sel\":\"\",\"menus_add\":null,\"menus_edit\":null,\"menus_del\":null,\"menus_undo\":\"N\",\"menus_exam\":\"N\",\"menus_conf\":\"N\",\"del\":\"N\"}}', '1', 'Y', '1462339062', '1462335907', 'N');
+INSERT INTO `kv_session` VALUES ('b64wd8du6a71n0grtf85xg81kb9hlf4l', '{\"user\":{\"id\":\"1\",\"username\":\"admin\",\"brand_id\":\"1\",\"group_id\":\"1\",\"maxmoney\":\"0.00\",\"operatemoney\":\"0.00\",\"operatettime\":\"0\",\"status\":\"Y\",\"is_luck\":\"N\",\"unlucktime\":\"0\",\"addtime\":\"0\",\"del\":\"N\"},\"group\":{\"id\":\"1\",\"name\":\"\\u8d85\\u7ea7\\u7ba1\\u7406\\u5458\\u7ec4\",\"brand_id\":\"1\",\"menus_sel\":\"\",\"menus_add\":null,\"menus_edit\":null,\"menus_del\":null,\"menus_undo\":\"N\",\"menus_exam\":\"N\",\"menus_conf\":\"N\",\"del\":\"N\"}}', '1', 'Y', '1462355022', '1462335907', 'N');
 INSERT INTO `kv_session` VALUES ('rzle863h549efcx52174c54fu9ptaa27', '{\"user\":{\"id\":\"1\",\"username\":\"admin\",\"brand_id\":\"1\",\"group_id\":\"1\",\"maxmoney\":\"0.00\",\"operatemoney\":\"0.00\",\"operatettime\":\"0\",\"status\":\"Y\",\"is_luck\":\"N\",\"unlucktime\":\"0\",\"addtime\":\"0\",\"del\":\"N\"},\"group\":{\"id\":\"1\",\"name\":\"\\u8d85\\u7ea7\\u7ba1\\u7406\\u5458\\u7ec4\",\"brand_id\":\"1\",\"menus_sel\":\"\",\"menus_add\":null,\"menus_edit\":null,\"menus_del\":null,\"menus_undo\":\"N\",\"menus_exam\":\"N\",\"menus_conf\":\"N\",\"del\":\"N\"}}', '1', 'Y', '1462259505', '1462258847', 'N');
 INSERT INTO `kv_session` VALUES ('v46e5883ad100pgx5256fyc6wc85r317', '{\"user\":{\"id\":\"1\",\"username\":\"admin\",\"brand_id\":\"1\",\"group_id\":\"1\",\"maxmoney\":\"0.00\",\"operatemoney\":\"0.00\",\"operatettime\":\"0\",\"status\":\"Y\",\"is_luck\":\"N\",\"unlucktime\":\"0\",\"addtime\":\"0\",\"del\":\"N\"},\"group\":{\"id\":\"1\",\"name\":\"\\u8d85\\u7ea7\\u7ba1\\u7406\\u5458\\u7ec4\",\"brand_id\":\"1\",\"menus_sel\":\"\",\"menus_add\":null,\"menus_edit\":null,\"menus_del\":null,\"menus_undo\":\"N\",\"menus_exam\":\"N\",\"menus_conf\":\"N\",\"del\":\"N\"}}', '1', 'Y', '1462274238', '1462272541', 'N');
 

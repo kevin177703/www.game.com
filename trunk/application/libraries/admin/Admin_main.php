@@ -39,16 +39,36 @@ class Admin_main{
 		if(empty($password))json_error("密码不能为空");
 		$username = strtolower($username);
 		$password = strtolower($password);
+		
 		$operate_no = get_rand(18);
 		$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"登录失败",'Y');
-		/**
-		$user_total = $this->init->model->log->login_num(array("username"=>$username));
-		if($user_total>=5)json_error("账号登录次数超过5次，请24小时后再登录");
-		*/
+		
 		$user = $this->init->model->admin->get_user_for_username($username);
 		if(!isset($user['id'])){
 			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"账号不存在",'Y');
 			json_error("登录账号不存在,请重试");
+		}
+		$unlucktime = $user['unlucktime'];
+		if(empty($unlucktime) || $unlucktime<time()-24*3600){
+			$unlucktime = time()-24*3600;
+		}
+		if($user['is_luck']=='Y'){
+			$time = time()-$user['lucktime'];
+			if($time>24*3600){
+				//当前解锁
+				$unlucktime = time();
+				//超过24小时自动解锁
+				$this->init->model->admin->edit_user_for_uid(array("is_luck"=>'N',"lucktime"=>null,"unlucktime"=>$unlucktime),$user['id']);
+			}else{
+				$num = ceil((24*3600-$time)/3600);
+				json_error("您的账号已被锁定，请重试{$num}小时后再试");
+			}
+		}
+		//获取解锁时间后的登录错误次数
+		$login_total = $this->init->model->log->login_num(array("addtime >"=>$unlucktime));
+		if($login_total>=5){
+			$this->init->model->admin->edit_user_for_uid(array("is_luck"=>'Y',"lucktime"=>time(),"unlucktime"=>time()),$user['id']);
+			json_error("您的密码错误次数超过5次，账号被锁定，请联系管理员");
 		}
 		if($user['password']!=get_admin_password($username, $password)){
 			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"密码错误",'Y');
