@@ -14,13 +14,9 @@ class Dmemcache {
 	//是否启用memcache缓存
 	public $status = false;
 	
-	//**********************缓存key***************************/
+	//**********************缓存额外参数名称***************************/
 	public $mem_brand = "brand";							//品牌相关
 	public $mem_session = "session";						//session相关
-	
-	//**********************缓存key对应no*********************/
-	public $mem_no_brand = "brand_no";						//品牌相关
-	public $mem_no_session = "session_no";					//session相关
 	
 	function __construct() {
 		$this->ci = ci();

@@ -91,13 +91,13 @@ a:hover{
     padding-left: 18px;
 }
 .icon-sys{
-    background: url(../images/icons/vipmanager.png) no-repeat;
+    background: url(../image/icons/vipmanager.png) no-repeat;
 }
 .icon-selfcenter {
-	background: url(../images/icons/selfcenter.png) no-repeat;
+	background: url(../image/icons/selfcenter.png) no-repeat;
 }
 .icon{
-    background: url(../images/icons/tabicons.png) no-repeat;
+    background: url(../image/icons/tabicons.png) no-repeat;
     width: 16px;
     height: 16px;
     position: absolute;

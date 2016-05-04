@@ -359,7 +359,7 @@ if(!function_exists('color')){
 	 * @param $color 颜色css
 	 */
 	function color($data,$color='red'){
-		$html = "<span class='{$color}'> {$data} </span>";
+		$html = "<span class='{$color}'>{$data}</span>";
 		return $html;
 	}
 }

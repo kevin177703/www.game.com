@@ -11,7 +11,7 @@
  * @property Madmin $admin
  * @property Msession $session
  * @property Msetting $setting
- * @property Mlog $log;
+ * @property Mlog $log
  */
 class Dmodel {
 	private $ci;   
@@ -26,6 +26,7 @@ class Dmodel {
 	public $session = null;							//session
 	public $setting = null;							//设置相关类
 	public $log = null;								//日志相关
+	public $abc = null;
 	
 	function __construct(){
 		$this->ci = ci();

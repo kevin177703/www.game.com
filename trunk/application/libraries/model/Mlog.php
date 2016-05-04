@@ -26,7 +26,6 @@ class Mlog{
 	 * @param $is_admin	
 	 */
 	function login($username,$operate_no,$brand_id,$explain,$is_admin='N',$status="N"){
-		$ip = ip();
 		$where = array("username"=>$username,"operate_no"=>$operate_no,"brand_id"=>$brand_id);
 		$data = array(
 				"username"=>$username,
@@ -35,7 +34,7 @@ class Mlog{
 				"explain"=>$explain,
 				"status"=>$status,
 				"is_admin"=>$is_admin,
-				"ip"=>$ip
+				"ip"=>ip()
 		);
 		$info = $this->model->get($this->model->table_log_login, $where);
 		if(isset($info['id'])){
@@ -53,5 +52,45 @@ class Mlog{
 		//24小时内
 		$where['addtime >'] = time()-24*3600;
 		return $this->model->total($this->model->table_log_login,$where);
+	}
+	/**
+	 * 操作记录
+	 * @param $brand_id 品牌id
+	 * @param $uid 操作人uid
+	 * @param $operator	操作人
+	 * @param $content	操作内容
+	 * @param $is_admin	是否是后台操作
+	 */
+	function notes($brand_id,$uid,$operator,$content,$is_admin='N'){
+		$data=array(
+				"brand_id"=>$brand_id,
+				"uid"=>$uid,
+				"operator"=>$operator,
+				"content"=>$content,
+				"ip"=>ip(),
+				"addtime"=>time(),
+				"is_admin"=>$is_admin
+		);
+		$this->model->save($this->model->table_log_notes, $data);
+	}
+	/**
+	 * 浏览器记录
+	 * @param $brand_id 品牌id
+	 * @param $uid	账号id
+	 * @param $username	账号	
+	 * @param $content 内容	
+	 * @param $is_admin	是否是后台
+	 */
+	function view($brand_id,$uid,$username,$content,$is_admin='N'){
+		$data=array(
+				"brand_id"=>$brand_id,
+				"uid"=>$uid,
+				"username"=>$username,
+				"content"=>$content,
+				"ip"=>ip(),
+				"addtime"=>time(),
+				"is_admin"=>$is_admin
+		);
+		$this->model->save($this->model->table_log_view, $data);
 	}
 }

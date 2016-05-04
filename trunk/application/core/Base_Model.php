@@ -54,6 +54,7 @@ class Base_Model extends CI_Model {
 	//*************************管理员相关表*************************/
 	public $table_admin = "admin";								//管理员表
 	public $table_admin_group = "admin_group";					//管理员组表
+	public $table_admin_menu = "admin_menu";					//后台管理菜单
 	
 	//*************************会员相关表**************************/
 	public $table_member = "member";							//会员表
@@ -65,6 +66,7 @@ class Base_Model extends CI_Model {
 	//*************************日志相关表**************************/
 	public $table_log_login = "log_login";						//登陆日志表
 	public $table_log_view = "log_view";						//浏览日志表
+	public $table_log_notes = "log_notes";						//操作记录表
 	
 	function __construct() {
 		parent::__construct ();

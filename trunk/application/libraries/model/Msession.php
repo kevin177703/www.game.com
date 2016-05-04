@@ -22,9 +22,9 @@ class Msession{
 	 * @param $is_admin 是否是后台
 	 */
 	function get_session($token,$is_admin="N"){
-		$no = $this->model->memcache->getNo($this->model->memcache->mem_no_session);
-		$token_no = $this->model->memcache->getNo($this->model->memcache->mem_no_session."_{$token}");
-		$key = $this->model->memcache->mem_session."_get_session_{$token}_{$is_admin}_{$no}_{$token_no}";
+		$key = $this->model->memcache->mem_session."_{$is_admin}";
+		$no = $this->model->memcache->getNo($key);
+		$key = "session_get_session_{$key}_{$token}_{$no}";
 		$info = $this->model->memcache->get($key);
 		if(empty($info)){
 			$info = null;
@@ -36,7 +36,7 @@ class Msession{
 		}
 		//更新session活动时间,10分钟更新一次
 		if(isset($info['lasttime']) && $info['lasttime']<time()-10*60){
-			$this->edit_session(array('lasttime'=>time()), $token);
+			$this->edit_session(array('lasttime'=>time()), $token, $key);
 		}
 		if(isset($info['session'])){
 			$info = json_decode($info['session'],true);
@@ -66,9 +66,10 @@ class Msession{
 	 * 更新session
 	 * @param $data 要更新的值
 	 * @param $toten 令牌
+	 * @param $key 缓存key
 	 */
-	function edit_session($data,$token){
-		$this->model->memcache->setNo($this->model->memcache->mem_no_session."_{$token}");
+	function edit_session($data,$token,$key=null){
+		if(!empty($key))$this->model->memcache->delete($key);
 		return $this->model->edit($this->model->table_session, $data, array("token"=>$token));
 	}
 	/**
@@ -77,7 +78,7 @@ class Msession{
 	 * @param $is_admin
 	 */
 	function del_session_for_uid($uid,$is_admin='N'){
-		$this->model->memcache->setNo($this->model->memcache->mem_no_session);
+		$no = $this->model->memcache->setNo($this->model->memcache->mem_session."_{$is_admin}");
 		return $this->_del_session(array("uid"=>$uid,"is_admin"=>$is_admin));
 	}
 	/**
@@ -95,9 +96,13 @@ class Msession{
 	/**
 	 * 根据令牌删除session
 	 * @param $token
+	 * @param $is_admin
 	 */
 	function del_session_for_token($token,$is_admin='N'){
-		$this->model->memcache->setNo($this->model->memcache->mem_no_session."_{$token}");
+		$key = $this->model->memcache->mem_session."_{$is_admin}";
+		$no = $this->model->memcache->getNo($key);
+		$key = "session_get_session_{$key}_{$token}_{$no}";
+		$this->model->memcache->delete($key);
 		return $this->_del_session(array("token"=>$token,"is_admin"=>$is_admin));
 	}
 	/**

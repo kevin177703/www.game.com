@@ -24,8 +24,8 @@ class Mbrand{
 		//此方法未例外，必须另外获取mode和memcache对象,其他所有方法都引用Dinit对象中的
 		if(empty($this->model))$this->model = model("bmodel");
 		if(empty($this->model->memcache))$this->model->memcache = library("dmemcache");
-		$no = $this->model->memcache->getNo($this->model->memcache->mem_no_brand);
-		$key = $this->model->memcache->mem_brand."_get_brand_for_host_{$host}_{$no}";
+		$no = $this->model->memcache->getNo($this->model->memcache->mem_brand);
+		$key = "brand_get_brand_for_host_{$this->model->memcache->mem_brand}_{$host}_{$no}";
 		$info = $this->model->memcache->get($key);
 		if(empty($info)){
 			$info = null;
@@ -46,8 +46,8 @@ class Mbrand{
 	 * @param $id
 	 */
 	function get_brand_template_for_id($id){
-		$no = $this->model->memcache->getNo($this->model->memcache->mem_no_brand);
-		$key = $this->model->memcache->mem_brand."_get_brand_template_for_id_{$id}_{$no}";
+		$no = $this->model->memcache->getNo($this->model->memcache->mem_brand);
+		$key = "brand_get_brand_template_for_id_{$this->model->memcache->mem_brand}_{$id}_{$no}";
 		$info = $this->model->memcache->get($key);
 		if(empty($info)){
 			$info = null;
