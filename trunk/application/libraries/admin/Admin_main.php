@@ -86,6 +86,10 @@ class Admin_main{
 			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"session错误",'Y');
 			json_error("登录失败,请联系管理员002");
 		}
+		//正确登录后重置登录错误次数
+		if($login_total>0){
+			$this->init->model->admin->edit_user_for_uid(array("is_luck"=>'N',"lucktime"=>null,"unlucktime"=>time()),$user['id']);
+		}
 		//登录成功后记录登录信息
 		$this->init->model->log->login($username,$operate_no,$this->init->brand_id,'登录成功','Y','Y');
 		json_ok("登录成功");
