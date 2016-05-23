@@ -10,7 +10,7 @@
     <div region="north" split="true" border="false" style="overflow: hidden; height: 30px;
         background: url({{$image}}layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
         line-height: 20px; color: #fff; font-family: Verdana, 微软雅黑,黑体">
-        <span style="float: right; padding-right: 20px;" class="head">        		 欢迎您：[{{$group_name}}]&&[{{$username}}]
+        <span style="float: right; padding-right: 20px;" class="head">        {{if $is_brand_list==1}}        <select class="easyui-combobox" panelHeight="auto" style="width:150px" id="sel_brand">			<option value="0">请选择品牌</option>			{{foreach from=$brand_list item=data}}			<option value="{{$data.id}}" {{if $sel_agent_id==$data.id}}{{/if}}>{{$data.username}}</option>			{{/foreach}}		</select>  		<script>		$(function(){			var op_agent_id = '{{$open_search_brand}}';			$("#sel_brand").combobox({			    onChange:function(newValue,oldValue){			        if(newValue==op_agent_id)return false;			        if(newValue>0){			        	window.location.href = "/?open_search_brand="+newValue;			        }else{			        	window.location.href = "/";			        }			        			    }			});			$('#sel_brand').combobox('setValue',op_agent_id);		});		</script>		{{/if}}		 欢迎您：[{{$group_name}}]&&[{{$username}}]
 	        <a href="javascript:void(0);" style="cursor: pointer; text-decoration: none;" id="editpass">[修改登录密码]</a>
 	        <a href="javascript:void(0);" id="loginout" style="cursor: pointer; text-decoration: none;">[安全退出]</a>	        <span id="showtime"></span>        </span>          <span style="padding-left: 10px; font-size: 16px;">
              <img src="{{$image}}blocks.gif" style="width: 20px; height: 20px;" align="absmiddle"/>{{$web_title}} 后台管理系统         </span>

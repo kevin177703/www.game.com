@@ -12,3 +12,4 @@ define("ROOT_APP_LIBRARIES", ROOT."application/libraries/");						//自定义类
 //***********************************常量配置******************************************/
 define("ADMIN_BRAND_ID", 1);														//超管所在品牌id,
 define("ADMIN_GROUD_ID", 1);														//超管级管理员组,
+define("BRAND_GROUD_ID", 2);														//品牌管理员组

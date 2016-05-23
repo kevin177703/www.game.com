@@ -19,9 +19,10 @@ class Madmin{
 	/**
 	 * 根据账号获取用户信息
 	 * @param $username 登录账号
+	 * @param $brand_id 品牌id
 	 */
-	function get_user_for_username($username){
-		return $this->model->get($this->model->table_admin,array("username"=>$username));
+	function get_user_for_username($username,$brand_id){
+		return $this->model->get($this->model->table_admin,array("username"=>$username,"brand_id"=>$brand_id));
 	}
 	/**
 	 * 根据账号id获取用户信息

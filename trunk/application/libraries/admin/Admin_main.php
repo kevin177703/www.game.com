@@ -16,17 +16,23 @@ class Admin_main{
 		$this->admin->load($init);
 	}
 	//后台首页
-	function index(){
+	function get_index(){
 		$data = array();
 		$data['menu'] = $this->init->model->admin->get_menu($this->admin->token);
 		$data['username']= $this->admin->username;
 		$data['group_name']=$this->admin->group_name;
+		$data['open_search_brand']=$this->admin->open_search_brand;
+		$data['brand_list'] = "";
+		$data['is_brand_list'] = 0;
+		if(is_array($data['brand_list']) && count($data['brand_list'])>1 && $this->admin->group['admin_menus']=='Y'){
+			$data['is_brand_list'] = 1;
+		}
 		$data['now']=time();
 		$this->init->assign($data);
 		$this->init->display("main/index");
 	}
 	//后台登录页
-	function login(){
+	function get_login(){
 		if($this->admin->uid>0)skip();
 		$this->init->display("main/login");
 	}
@@ -41,11 +47,11 @@ class Admin_main{
 		$password = strtolower($password);
 		
 		$operate_no = get_rand(18);
-		$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"登录失败",'Y');
+		$this->init->model->log->login($username,$operate_no,$this->admin->brand_id,"登录失败",'Y');
 		
-		$user = $this->init->model->admin->get_user_for_username($username);
+		$user = $this->init->model->admin->get_user_for_username($username,$this->admin->brand_id);
 		if(!isset($user['id'])){
-			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"账号不存在",'Y');
+			$this->init->model->log->login($username,$operate_no,$this->admin->brand_id,"账号不存在",'Y');
 			json_error("登录账号不存在,请重试");
 		}
 		$unlucktime = $user['unlucktime'];
@@ -71,27 +77,27 @@ class Admin_main{
 			json_error("您的密码错误次数超过5次，账号被锁定，请联系管理员");
 		}
 		if($user['password']!=get_admin_password($username, $password)){
-			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"密码错误",'Y');
+			$this->init->model->log->login($username,$operate_no,$this->admin->brand_id,"密码错误",'Y');
 			json_error("登录密码错误，请重试");
 		}
 		//登陆成功后查询用户所在组
 		$group = $this->init->model->admin->get_group_for_id($user['group_id']);
 		if(!isset($group['id'])){
-			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"用户组错误",'Y');
-			json_error("登录失败,请联系管理员001");
+			$this->init->model->log->login($username,$operate_no,$this->admin->brand_id,"用户组错误",'Y');
+			json_error("登录失败,请重试或联系管理员001");
 		}
 		unset($user['password']);
 		$session = array("user"=>$user,"group"=>$group);
 		if($this->init->model->session->add_session($session, $this->admin->token,"Y")==false){
 			$this->init->model->log->login($username,$operate_no,$this->init->brand_id,"session错误",'Y');
-			json_error("登录失败,请联系管理员002");
+			json_error("登录失败,请重试或联系管理员002");
 		}
 		//正确登录后重置登录错误次数
 		if($login_total>0){
 			$this->init->model->admin->edit_user_for_uid(array("is_luck"=>'N',"lucktime"=>null,"unlucktime"=>time()),$user['id']);
 		}
 		//登录成功后记录登录信息
-		$this->init->model->log->login($username,$operate_no,$this->init->brand_id,'登录成功','Y','Y');
+		$this->init->model->log->login($username,$operate_no,$this->admin->brand_id,'登录成功','Y','Y');
 		json_ok("登录成功");
 	}
 	//修改登录密码

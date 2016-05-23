@@ -8,7 +8,18 @@
  */
 class Admin{
 	private $init;                           		//默认起始类
+	public $open_search_brand = true;				//是否开启超级品牌管理其他品牌方法
 	public $token=null;								//令牌
+	
+	//**********************权限组********************/
+	public $is_del = 'N'; 					 		//删除权限
+	public $is_list = 'N'; 			         		//查看列表权限
+	public $is_one = 'N'; 			         		//查看查看权限
+	public $is_add = 'N'; 					 		//添加权限
+	public $is_edit = 'N'; 							//编辑权限
+	public $is_undo = 'N'; 					 		//冲正负权限
+	public $is_exam = 'N'; 					 		//资金审核
+	public $is_conf = 'N'; 					 		//资金确认
 	
 	//**********************后台参数*******************/
 	public $user = array();							//用户
@@ -20,6 +31,7 @@ class Admin{
 	public $opener_name = "";						//操作员名称[组别][账号]
 	public $is_admin_brand = false;					//是否是超级管理员品牌
 	public $is_admin_group = false;					//是否是超级管理员
+	public $brand_id = 0;							//品牌id
 	
 	function __construct(){
 	}
@@ -56,6 +68,17 @@ class Admin{
 				skip("/admin/login");
 			}
 		}
+		
+		$this->brand_id = $this->init->brand_id;
+		//管理品牌可以操纵其他品牌
+		$search_brand_id = get_cookieI("search_brand_id");
+		if(isset($_GET['search_brand_id']) && $this->is_admin_brand){
+			$search_brand_id = intval($_GET['search_brand_id']);
+			del_cookieI("search_brand_id");
+			if($search_brand_id>0)set_cookieI("search_brand_id", $search_brand_id);
+		}
+		if($search_brand_id>0 && $this->open_search_brand)$this->brand_id = $search_brand_id;
+		
 		//全局模板变量
 		$assign = array(
 				"third"=>"/public/third/",
@@ -64,7 +87,12 @@ class Admin{
 				"image"=>"/public/{$this->init->template_name}/image/",
 				"web_title"=>$this->init->brand_name,
 				"web_year"=>date("Y-m-d"),
+				"group"=>$this->group,
 		);
 		$this->init->assign($assign);
+	}
+	//权限处理
+	private function _authority(){
+		
 	}
 }
